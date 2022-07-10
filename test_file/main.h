@@ -32,4 +32,3 @@ int hexal(va_list a);
 int hexau(va_list a);
 
 #endif
-
