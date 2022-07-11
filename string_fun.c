@@ -1,44 +1,26 @@
 #include "main.h"
 /**
-  * st - fills memory with a constant byte
-  * @a: the value to print
-  * Return: numbers of characters printed
-  */
-int st(va_list a)
+ * print_str - writes the string to stdout
+ * @arguments: input string
+ * @buf: buffer pointer
+ * @ibuf: index for buffer pointer
+ * Return: On success 1.
+ */
+int print_str(va_list arguments, char *buf, unsigned int ibuf)
 {
-	char *st = va_arg(a, char *);
-	int i;
+	char *str;
+	unsigned int i;
+	char nill[] = "(null)";
 
-	if (st == NULL)
-		st = "(null)";
-
-	for (i = 0; st[i] != '\0'; i++)
-		;
-	return (write(1, st, i));
-}
-
-/**
-  * ch - fills memory with a constant byte
-  * @a: the value to print
-  * Return: numbers of characters printed
-  */
-int ch(va_list a)
-{
-	char st = va_arg(a, int);
-
-	return (write(1, &st, 1));
-}
-
-/**
-  * por - fills memory with a constant byte
-  * @a: the value to print
-  * Return: numbers of characters printed
-  */
-int por(va_list a)
-{
-	char porce = '%';
-
-	(void) a;
-	return (write(1, &porce, 1));
+	str = va_arg(arguments, char *);
+	if (str == NULL)
+	{
+		for (i = 0; nill[i]; i++)
+			ibuf = handl_buf(buf, nill[i], ibuf);
+		return (6);
+	}
+	for (i = 0; str[i]; i++)
+		ibuf = handl_buf(buf, str[i], ibuf);
+	return (i);
 }
 
