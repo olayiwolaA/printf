@@ -1,30 +1,37 @@
 #include "main.h"
 /**
-* bina - fills memory with a constant byte
-* @a: the value to print
-* Return: numbers of characters printed
-*/
-int bina(va_list a)
+ * fill_binary_array - prints decimal in binary
+ * @binary: pointer to binary
+ * @int_in: input number
+ * @isneg: if input number is negative
+ * @limit: size of the binary
+ * Return: number of chars printed.
+ */
+char *fill_binary_array(char *binary, long int int_in, int isneg, int limit)
 {
-	unsigned int num = va_arg(a, int), i, j, num1 = 0, cant = 0, bin = 0;
-	char *binary;
+	int i;
 
-	num1 = num;
-	for (i = 1; num1 / 2 != 0; i++)
-		num1 /= 2;
-
-	binary = malloc(sizeof(char) * (i + 1));
-	if (binary == NULL)
-		return (0);
-	for (j = 0; j < i; j++)
+	for (i = 0; i < limit; i++)
+		binary[i] = '0';
+	binary[limit] = '\0';
+	for (i = limit - 1; int_in > 1; i--)
 	{
-		bin = num % 2;
-		binary[(i - 1) - j] = bin + '0';
-		num /= 2;
+		if (int_in == 2)
+			binary[i] = '0';
+		else
+			binary[i] = (int_in % 2) + '0';
+		int_in /= 2;
 	}
-	binary[j] = '\0';
-	cant = write(1, binary, i);
-	free(binary);
-	return (cant);
+	if (int_in != 0)
+		binary[i] = '1';
+	if (isneg)
+	{
+		for (i = 0; binary[i]; i++)
+			if (binary[i] == '0')
+				binary[i] = '1';
+			else
+				binary[i] = '0';
+	}
+	return (binary);
 }
 

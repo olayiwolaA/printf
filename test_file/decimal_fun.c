@@ -1,37 +1,34 @@
 #include "main.h"
 
 /**
-* inte - fills memory with a constant byte
-* @a: the value to print
-* Return: numbers of characters printed
-*/
-int inte(va_list a)
+ * fill_hex_array - writes the character c to stdout
+ *
+ * @bnr: array where is stored the binary.
+ * @hex: array where is stored the hexadecimal.
+ * @isupp: integer that determines if the hexadecimal array is
+ * in uppercase or lowercase letter.
+ * @limit: size of hex
+ * Return: binary array.
+ */
+char *fill_hex_array(char *bnr, char *hex, int isupp, int limit)
 {
-	int num = va_arg(a, int), i, j, cant = 0, dig = 0, num1 = 0, neg = 0;
-	char *number;
+	int op, i, j, toletter;
 
-	num1 = num;
-	if (num1 < 0)
-		neg = 1;
-
-	for (i = 1; num1 / 10 != 0; i++)
-		num1 /= 10;
-
-	number = malloc(sizeof(char) * (i + 1 + neg));
-	if (number == NULL)
-		return (0);
-	for (j = 0; j < i; j++)
+	hex[limit] = '\0';
+	if (isupp)
+		toletter = 55;
+	else
+		toletter = 87;
+	for (i = (limit * 4) - 1; i >= 0; i--)
 	{
-		dig = num % 10;
-		(neg) ? (dig *= -1) : (dig *= 1);
-		number[(i + neg - 1) - j] = dig + '0';
-		num /= 10;
+		for (op = 0, j = 1; j <= 8; j *= 2, i--)
+			op = ((bnr[i] - '0') * j) + op;
+		i++;
+		if (op < 10)
+			hex[i / 4] = op + 48;
+		else
+			hex[i / 4] = op + toletter;
 	}
-	if (neg == 1)
-		number[0] = '-';
-	number[j + neg] = '\0';
-	cant = write(1, number, i + neg);
-	free(number);
-	return (cant);
+	return (hex);
 }
 
